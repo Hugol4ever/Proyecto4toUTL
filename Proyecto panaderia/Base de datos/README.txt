@@ -1,0 +1,1 @@
+Aquí irá el script de la base de datos en MySQL

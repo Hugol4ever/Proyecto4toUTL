@@ -1,0 +1,1 @@
+Aquí van las clases de transferencia de datos (DTO)

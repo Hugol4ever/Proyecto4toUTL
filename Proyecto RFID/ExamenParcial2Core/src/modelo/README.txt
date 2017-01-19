@@ -1,0 +1,1 @@
+Aquí van clases generales del paquete "modelo"

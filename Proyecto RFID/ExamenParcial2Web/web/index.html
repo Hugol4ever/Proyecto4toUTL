@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="css/form.css" type="text/css"><link>
+        <title>Registro</title>
+    </head>
+    <body>
+        <div class="login-form">
+            <center>
+                <img src="imagenes/logo.png" WIDTH=200 HEIGHT=300 >
+                <br></br>
+            </center>
+            <form name="registro" action="controladores/Nuevo.jsp" method="POST">
+                <div class="form-group ">
+                    Nombre: <input type="text" class="form-control" name="nombre"><br></br>
+		    E-Mail: <input type="email" class="form-control" name="mail"><br></br>
+                    UT Procedencia: <select name="utl" class="form-control">
+                        <option value="UTL">UTL</option>
+                        <option value="UTS">UTS</option>
+                        <option value="UTM">UTM</option>
+                        <option value="UTG">UTG</option>
+                        <option value="UTSG">UTSG</option>
+                    </select> <br></br> <!--<input type="text" class="form-control" name="utl"><br></br>-->
+		    <input type="submit" class="log-btn" name="ok" value="ok">
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
