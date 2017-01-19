@@ -36,6 +36,10 @@ public class Cliente {
         return idUsuario;
     }
 
+    /**
+     * Método que genera la serie de números aleatorios
+     * @param idUsuario es el id del usuario
+     */
     public void setIdUsuario(Usuario idUsuario) {
         this.idUsuario = idUsuario;
     }

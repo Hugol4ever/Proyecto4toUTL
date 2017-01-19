@@ -12,7 +12,9 @@ import java.awt.Font;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.JTableHeader;
+import modelo.DAO.Cliente;
 
 /**
  *
@@ -24,6 +26,7 @@ public class Venta extends javax.swing.JFrame {
      * Creates new form Principal
      */
     private VentaController ventaC;
+    private Cliente cliente;
     
     public Venta() throws Exception {
         setUndecorated(true);
@@ -37,6 +40,16 @@ public class Venta extends javax.swing.JFrame {
         JTableHeader th = tblProductos.getTableHeader();
         th.setFont(new Font("Segoe Print", 1, 14));
         th.setForeground(Color.DARK_GRAY);
+    }
+    
+    public void insertar(Cliente c) {
+        try {
+            this.ventaC.registrarVenta(cliente, tblProductos);
+            this.ventaC.getMpr().close();
+            this.ventaC = new VentaController(this, tblProductos);
+        } catch (Exception ex) {
+            Logger.getLogger(Venta.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -69,6 +82,11 @@ public class Venta extends javax.swing.JFrame {
         btnLimpiar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(151, 17, 42));
 
@@ -161,7 +179,6 @@ public class Venta extends javax.swing.JFrame {
         jLabel4.setText("Total:");
 
         jTextField2.setFont(new java.awt.Font("Segoe Print", 0, 14)); // NOI18N
-        jTextField2.setEnabled(false);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -329,6 +346,7 @@ public class Venta extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalir1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir1ActionPerformed
+        this.ventaC.getMpr().close();
         Fade.JFrameFadeOut(1f, 0f, 0.1f, 70, this, Fade.DISPOSE);
     }//GEN-LAST:event_btnSalir1ActionPerformed
 
@@ -361,12 +379,24 @@ public class Venta extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-        
+        try {
+            this.ventaC.getMpr().close();
+            this.ventaC = new VentaController(this, tblProductos);
+        } catch (Exception ex) {
+            Logger.getLogger(Venta.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btnComprarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComprarActionPerformed
-        
+        Huella huella = new Huella();
+        huella.setVenta(this);
+        huella.getBtnAgregar().setVisible(false);
+        huella.setVisible(true);
     }//GEN-LAST:event_btnComprarActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        this.ventaC.getMpr().close();
+    }//GEN-LAST:event_formWindowClosed
 
     /**
      * @param args the command line arguments
@@ -434,6 +464,15 @@ public class Venta extends javax.swing.JFrame {
 
     public JTable getTblProductos() {
         return tblProductos;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+        System.out.println(cliente.getIdUsuario());
+    }
+
+    public JTextField getjTextField2() {
+        return jTextField2;
     }
 
 }

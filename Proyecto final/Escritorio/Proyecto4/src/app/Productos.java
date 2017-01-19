@@ -9,6 +9,9 @@ import Animacion.Fade;
 import controlador.ProductosController;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
+import java.awt.Toolkit;
+import javax.swing.ImageIcon;
 import javax.swing.table.JTableHeader;
 
 /**
@@ -417,7 +420,11 @@ public class Productos extends javax.swing.JFrame {
         if (parametro.equals("Todos *")) {
             this.productosC = new ProductosController(this.tblProductos);
         } else {
-            this.productosC.obtenerProductos(parametro, valor);
+            if (parametro.equals("Categoría")) {
+                this.productosC.obtenerProductos("Categoria", valor);
+            } else {
+                this.productosC.obtenerProductos(parametro, valor);
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -431,7 +438,8 @@ public class Productos extends javax.swing.JFrame {
             this.txtMarca.setText(datos[2]);
             this.txtCategoria.setText(datos[3]);
             this.txtPrecio.setText(datos[4]);
-            
+            Image foto = Toolkit.getDefaultToolkit().getImage(datos[5]);
+            this.jLabel12.setIcon(new ImageIcon(foto.getScaledInstance(190, 150, 0)));
         }
     }//GEN-LAST:event_tblProductosMouseClicked
 

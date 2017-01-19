@@ -52,7 +52,8 @@ create table Producto
     Foto varchar(30),
     constraint pk_Id_Producto primary key(Id_Producto)
 );
-insert into Producto values(124, 'Arroz', 'La fina', 'Granos', 10, 12, '');
+insert into Producto values(129, 'Cigarros Marlboro', 'Marlboro', 'Varios', 10, 40, './/src/productos/cigarros.jpeg');
+
 
 
 create table Detalle_Venta
@@ -146,7 +147,7 @@ Delimiter ;
  
  -- Registrar Detalle_Venta ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 Delimiter $$
-create procedure regDetVenta (in var_Cantidad int, in var_Precio double(10,2), in var_Id_Producto1 int,in va_Id_Venta1 int, out var_Id_DetalleVenta int)
+create procedure regDetVenta (in var_Cantidad int, in var_Precio double(10,2), in var_Id_Producto1 int,in var_Id_Venta1 int, out var_Id_DetalleVenta int)
 begin
 insert into Detalle_Venta (Cantidad, Precio, Id_Producto1, Id_Venta1) values (var_Cantidad, var_Precio, var_Id_Producto1, var_Id_Venta1);
 set var_Id_DetalleVenta=last_insert_id();
@@ -159,4 +160,7 @@ Delimiter ;
 
 create view vistaCliente as 
 select Id_Cliente, Nombre, Correo, Telefono, Genero, N_Tarjeta, Huella from  Cliente c inner join Usuario u on c.Id_Usuario1 = u.Id_Usuario inner join Huella h on u.Id_Huella1 = h.Id_Huella;
-select * from Usuario;
+select * from vistaCliente;
+select * from Venta;
+select * from detalle_Venta;
+select * from Producto;

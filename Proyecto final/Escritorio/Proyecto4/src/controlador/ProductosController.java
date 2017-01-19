@@ -29,8 +29,8 @@ public class ProductosController {
     
     //<editor-fold defaultstate="collapsed" desc="Métodos generales">
     public void obtenerProductos(String parametro, String valor) {
-        DefaultTableModel modelo = (DefaultTableModel) this.tabla.getModel();
         limpiarTabla();
+        DefaultTableModel modelo = (DefaultTableModel) this.tabla.getModel();
         ArrayList<Producto> lista = this.producto.ListaProducto(parametro, valor);
         for (Producto lista1 : lista) {
             Object[] array = {lista1.getIdProducto(), lista1.getNombre(), lista1.getMarca(),
@@ -41,8 +41,8 @@ public class ProductosController {
     }
     
     private void obtenerProductos() {
-        DefaultTableModel modelo = (DefaultTableModel) this.tabla.getModel();
         limpiarTabla();
+        DefaultTableModel modelo = (DefaultTableModel) this.tabla.getModel();
         ArrayList<Producto> lista = this.producto.ListaProducto();
         for (Producto lista1 : lista) {
             Object[] array = {lista1.getIdProducto(), lista1.getNombre(), lista1.getMarca(),

@@ -22,7 +22,7 @@ public class DTOproducto {
    
    public ArrayList<Producto> ListaProducto(String parametro, String valor) {
        ArrayList<Producto> prod = new ArrayList<Producto>();
-       String query = "SELECT * FROM vistProductos where " + parametro + " = " + valor;
+       String query = "SELECT * FROM vistProductos where " + parametro + " = '" + valor + "'";
        try {
            cn = mysql.abrir();
            st = cn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -67,15 +67,16 @@ public class DTOproducto {
    }
    
    public String[] ListaProducto2(int id) {
-       String[] prod = new String[2];
-       String query = "SELECT Nombre, Precio FROM vistProductos where Id_Producto = " + id;
+       String[] prod = new String[3];
+       String query = "SELECT Id_Producto, Nombre, Precio FROM vistProductos where Id_Producto = " + id;
        try {
            cn = mysql.abrir();
            st = cn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
            rs = st.executeQuery(query);
            while (rs.next()) {
-               prod[0] = rs.getString("Nombre");
-               prod[1] = String.valueOf(rs.getDouble("Precio"));
+               prod[0] = String.valueOf(rs.getInt("Id_Producto"));
+               prod[1] = rs.getString("Nombre");
+               prod[2] = String.valueOf(rs.getDouble("Precio"));
            }
        } catch (Exception e) {
            e.printStackTrace();

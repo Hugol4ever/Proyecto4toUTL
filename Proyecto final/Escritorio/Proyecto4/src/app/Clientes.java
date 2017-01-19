@@ -6,11 +6,22 @@
 package app;
 
 import Animacion.Fade;
+import com.digitalpersona.onetouch.DPFPTemplate;
+import controlador.ClientesController;
 import java.awt.Color;
 import java.awt.Font;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.table.JTableHeader;
+import modelo.DAO.Cliente;
+import modelo.DAO.Usuario;
+import modelo.DTO.DTOCliente;
 
 /**
  *
@@ -21,17 +32,35 @@ public class Clientes extends javax.swing.JFrame {
     /**
      * Creates new form Principal
      */
+    private DPFPTemplate template;
+    private ClientesController clienteC;
+    
     public Clientes() {
         setUndecorated(true);
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
         encabezado();
+        this.clienteC = new ClientesController(jTable1);
     }
 
     public void encabezado() {
         JTableHeader th = jTable1.getTableHeader();
         th.setFont(new Font("Segoe Print", 1, 14));
         th.setForeground(Color.DARK_GRAY);
+    }
+    
+    private void limpiar() {
+        this.txtNombre.setText(null);
+        this.txtCorreo.setText(null);
+        this.txtTel.setText(null);
+        this.txtContraseña.setText(null);
+        this.txtNTarjeta.setText(null);
+        this.labHuella.setIcon(null);
+    }
+    
+    public void setCorrecto() {
+        Image foto = Toolkit.getDefaultToolkit().getImage(".//src/img/correcto.png");
+        this.labHuella.setIcon(new ImageIcon(foto.getScaledInstance(190, 150, 0)));
     }
 
     /**
@@ -175,6 +204,7 @@ public class Clientes extends javax.swing.JFrame {
         jRadioButton3.setBackground(new java.awt.Color(251, 245, 135));
         buttonGroup1.add(jRadioButton3);
         jRadioButton3.setFont(new java.awt.Font("MingLiU_HKSCS-ExtB", 0, 15)); // NOI18N
+        jRadioButton3.setSelected(true);
         jRadioButton3.setText("Masculino");
         jRadioButton3.setBorder(null);
         jRadioButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -241,6 +271,11 @@ public class Clientes extends javax.swing.JFrame {
         jButton1.setBorderPainted(false);
         jButton1.setContentAreaFilled(false);
         jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Segoe Print", 0, 14)); // NOI18N
         jLabel2.setText("Buscar por:");
@@ -322,6 +357,11 @@ public class Clientes extends javax.swing.JFrame {
                 btnLimpiarMouseExited(evt);
             }
         });
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
         jPanel8.add(btnLimpiar);
         btnLimpiar.setBounds(-100, 20, 210, 109);
 
@@ -337,6 +377,11 @@ public class Clientes extends javax.swing.JFrame {
                 btnHuellaMouseExited(evt);
             }
         });
+        btnHuella.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHuellaActionPerformed(evt);
+            }
+        });
         jPanel8.add(btnHuella);
         btnHuella.setBounds(-100, 150, 210, 109);
 
@@ -350,6 +395,11 @@ public class Clientes extends javax.swing.JFrame {
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnAgregarMouseExited(evt);
+            }
+        });
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
             }
         });
         jPanel8.add(btnAgregar);
@@ -465,6 +515,49 @@ public class Clientes extends javax.swing.JFrame {
         Animacion.Animacion.mover_izquierda(0, -100, 3, 2, btnAgregar);
     }//GEN-LAST:event_btnAgregarMouseExited
 
+    private void btnHuellaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuellaActionPerformed
+        Huella huella = new Huella();
+        huella.setClientes(this);
+        huella.getBtnVerificar().setVisible(false);
+        huella.setVisible(true);
+    }//GEN-LAST:event_btnHuellaActionPerformed
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        try {
+            Cliente cliente = new Cliente();
+            cliente.setNombre(this.txtNombre.getText());
+            cliente.setCorreo(this.txtCorreo.getText());
+            cliente.setTelefono(this.txtTel.getText());
+            if (this.jRadioButton3.isSelected()) {
+                cliente.setGenero("Masculino");
+            } else {
+                cliente.setGenero("Femenino");
+            }
+            cliente.setnTarjeta(this.txtNTarjeta.getText());
+            cliente.setIdUsuario(new Usuario());
+            cliente.getIdUsuario().setIdHuella(new modelo.DAO.Huella());
+            cliente.getIdUsuario().getIdHuella().setTemplate(this.template);
+            DTOCliente dto = new DTOCliente();
+            if (dto.registrarCliente(cliente)) {
+                JOptionPane.showMessageDialog(null, "Se registró se ha agregado con éxito");
+                limpiar();
+            } else {
+                JOptionPane.showMessageDialog(null, "Ocurrió un error");
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Clientes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.clienteC = new ClientesController(jTable1);
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        limpiar();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -535,4 +628,21 @@ public class Clientes extends javax.swing.JFrame {
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtTel;
     // End of variables declaration//GEN-END:variables
+
+    public void setTemplate(DPFPTemplate template) {
+        this.template = template;
+    }
+
+    public JButton getBtnHuella() {
+        return btnHuella;
+    }
+
+    public JLabel getLabHuella() {
+        return labHuella;
+    }
+
+    public void setLabHuella(JLabel labHuella) {
+        this.labHuella = labHuella;
+    }
+
 }
